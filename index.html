@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Just do it Todo</title>
+</head>
+<body>
+    <!-- To add a new todo list -->
+    <div id="add-todo-list">
+        <i class="fas fa-plus fa-3x"></i>
+    </div>
+    <!-- Add todo form -->
+    <div id="add-todo-list-form" class="hidden">
+        <div id="container">
+            <div id="instruction">Todo List Name:</div>
+            <div id="inputs">
+                <input id="new-todo-list-input" type="text">
+                <button id="add-new-todo-list" type="submit">ADD</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Todos to be appended here -->
+
+    <script src="draggable.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
