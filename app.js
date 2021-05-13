@@ -40,7 +40,8 @@ addNewTodoList.addEventListener('click', function (e) {
         <div class="todo-items"></div>
     `;
 
-    addTodoForm.classList.add('hidden')
+    addTodoForm.classList.add('hidden');
+    todoListName.value = '';
     document.body.append(todoList);
 
     // Place it randomly within constraints of screen
@@ -57,7 +58,7 @@ addNewTodoList.addEventListener('click', function (e) {
     })
     // Make todo list draggable on creation
     draggable(todoList);
-})
+});
 
 // All events must be delegated
 window.addEventListener('click', (e) => {
