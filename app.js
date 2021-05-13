@@ -1,9 +1,62 @@
-const addTodoList = document.querySelector('#add-todo-list');
 const addTodoForm = document.querySelector('#add-todo-list-form');
+const showAddTodoForm = document.querySelector('#show-add-todo-list-form');
+const addNewTodoList = document.querySelector('#add-new-todo-list');
 
 // To show new todo list form
-addTodoList.addEventListener('click', () => {
+showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
+})
+
+addNewTodoList.addEventListener('click', function (e) {
+    // To add a new todo list
+    let todoListName = document.querySelector('#new-todo-list-input');
+    if (!(todoListName.value)) {
+        return todoListName.focus();
+    }
+
+    let todoList = document.createElement('section');
+    // Random string to use as id's
+    // convert random number into hexadecimals and use everything after the dot
+    todoList.id = Math.random().toString(16).substring(2);
+    todoList.classList.add('todo-list');
+    todoList.classList.add('hidden');
+    todoList.innerHTML = `
+        <div class="todo-list-title">
+            <span>${todoListName.value}</span>
+        </div>
+
+        <div class="add-todo">
+            <div class="todo-text">
+                <input class="input" type="text">
+            </div>
+            <div class="due-date">
+                <label class="due-label">Due:</label>
+                <input class="date" type="date">
+                <input class="time" type="time">
+            </div>
+            <button class="submit" type="submit">Add</button>
+        </div>
+        
+        <div class="todo-items"></div>
+    `;
+
+    addTodoForm.classList.add('hidden')
+    document.body.append(todoList);
+
+    // Place it randomly within constraints of screen
+    let randomX = Math.random() * (window.innerHeight - todoList.offsetHeight);
+    let randomY = Math.random() * (window.innerWidth - todoList.offsetWidth);
+    todoList.style.top = `${randomX}px`;
+    todoList.style.left = `${randomY}px`;
+    // Ensure it is always on top
+    todoList.style.zIndex = 1;
+
+    // wait until compute transitions
+    requestAnimationFrame(() => {
+        todoList.classList.remove('hidden');
+    })
+    // Make todo list draggable on creation
+    draggable(todoList);
 })
 
 // All events must be delegated
@@ -11,59 +64,6 @@ window.addEventListener('click', (e) => {
     // To close "add todo list" window
     if (e.target.id === 'add-todo-list-form') {
         addTodoForm.classList.add('hidden');
-    }
-
-    // To add a new todo list
-    if (e.target.id === 'add-new-todo-list') {
-        console.log(e.target.id)
-
-        let todoListName = document.querySelector('#new-todo-list-input');
-        if (!(todoListName.value)) {
-            return todoListName.focus();
-        }
-
-        let todoList = document.createElement('section');
-        // Random string to use as id's
-        // convert random number into hexadecimals and use everything after the dot
-        todoList.id = Math.random().toString(16).substring(2);
-        todoList.classList.add('todo-list');
-        todoList.classList.add('hidden');
-        todoList.innerHTML = `
-            <div class="todo-list-title">
-                <span>${todoListName.value}</span>
-            </div>
-
-            <div class="add-todo">
-                <div class="todo-text">
-                    <input class="input" type="text">
-                </div>
-                <div class="due-date">
-                    <label class="due-label">Due:</label>
-                    <input class="date" type="date">
-                    <input class="time" type="time">
-                </div>
-                <button class="submit" type="submit">Add</button>
-            </div>
-            
-            <div class="todo-items"></div>
-        `;
-
-        addTodoForm.classList.add('hidden')
-        document.body.append(todoList);
-
-        // Place it randomly within constraints of screen
-        let randomX = Math.random() * (window.innerHeight - todoList.offsetHeight);
-        let randomY = Math.random() * (window.innerWidth - todoList.offsetWidth);
-        todoList.style.top = `${randomX}px`;
-        todoList.style.left = `${randomY}px`;
-        // Ensure it is always on top
-        todoList.style.zIndex = 1;
-
-        // wait until compute transitions
-        requestAnimationFrame(() => {
-            todoList.classList.remove('hidden');
-        })
-        draggable(todoList);
     }
 
     // To add a todo item to a specific list

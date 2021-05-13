@@ -14,7 +14,7 @@ body {
     overflow: hidden;
 }
 
-#add-todo-list {
+#show-add-todo-list-form {
     border-radius: 50%;
     padding: 1rem;
     margin: 1rem;
@@ -30,7 +30,7 @@ body {
     justify-content: center;
     transition: box-shadow 200ms ease;
 }
-#add-todo-list:hover {
+#show-add-todo-list-form:hover {
     box-shadow: 0 0 20px 0 white;
 }
 /* Form to add todo lists */
