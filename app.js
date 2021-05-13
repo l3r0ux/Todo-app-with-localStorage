@@ -52,8 +52,10 @@ window.addEventListener('click', (e) => {
         document.body.append(todoList);
 
         // Place it randomly within constraints of screen
-        todoList.style.top = `${Math.random() * ((window.innerWidth - todoList.offsetHeight) - (todoList.offsetHeight + 50))}px`;
-        todoList.style.left = `${Math.random() * ((window.innerHeight - (todoList.offsetWidth/2.2)))}px`;
+        let randomX = Math.random() * (window.innerHeight - todoList.offsetHeight);
+        let randomY = Math.random() * (window.innerWidth - todoList.offsetWidth);
+        todoList.style.top = `${randomX}px`;
+        todoList.style.left = `${randomY}px`;
         // Ensure it is always on top
         todoList.style.zIndex = 1;
 
