@@ -103,7 +103,25 @@ window.addEventListener('click', (e) => {
 
         // Do time comparison and assign background colors
         if (todoItemDueDate.value && todoItemDueTime.value) {
-            console.log('hello')
+            // Get current date
+            let currentDate = new Date();
+            console.log(currentDate.getTime())
+
+            // Extract hours and minutes from time input
+            let dueHours = parseFloat(todoItemDueTime.value.slice(0, 2))
+            let dueMinutes = parseFloat(todoItemDueTime.value.slice(3, 5))
+
+            // Get entered date in same format
+            let tempDate = new Date(todoItemDueDate.value);
+            tempDate.setHours(dueHours);
+            tempDate.setMinutes(dueMinutes);
+            console.log(tempDate.getTime())
+
+            // difference between due date and current date in seconds
+            let difference = (tempDate - currentDate) / 1000;
+            console.log(difference);
+
+            
         }
 
         specificTodoList.children[2].append(todoItemContainer);
