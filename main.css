@@ -272,19 +272,20 @@ body {
 .todo-item.due-date-passed {
     background-color: rgba(0, 0, 0, 0.466) !important;
 }
-.todo-item.due-date-passed .text,
 .todo-item.due-date-passed .complete {
     pointer-events: none;
-    opacity: 0.5;
-    text-decoration: line-through;
+    opacity: 0.5;  
 }
 .todo-item.due-date-passed .control-container > .delete {
     pointer-events: all;
 }
-.todo-item.due-date-passed::after {
+.todo-item.due-date-passed .text {
+    color: rgba(0, 0, 0, 0.603);
+}
+.todo-item.due-date-passed .text::after {
     content: 'Due Date Missed';
     color: white;
-    position: absolute;
+    position: relative;
     left: 50%;
     transform: translate(-50%, 0);
 }
