@@ -215,17 +215,23 @@ body {
     padding: 1rem;
     border-bottom: 1px solid rgba(92, 92, 92, 0.192);
     height: 2.5rem;
-    transition: height 200ms ease, opacity 200ms ease;
+    transition: all 200ms ease;
     opacity: 1;
+    visibility: visible;
+    overflow: hidden;
 }
 .todo-item.hidden {
     height: 0;
     opacity: 0;
+    padding: 0;
 }
 /* For todo items with "completed" class */
 .todo-item.completed {
     color: rgba(78, 78, 78, 0.822);
     background-color: rgba(0, 128, 0, 0.425);
+}
+.todo-item.completed .text {
+    text-decoration: line-through;
 }
 .text {
     max-width: 80%;

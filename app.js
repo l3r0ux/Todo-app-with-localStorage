@@ -7,7 +7,8 @@ showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
 })
 
-addNewTodoList.addEventListener('click', function (e) {
+// To add a new todo list
+addNewTodoList.addEventListener('click', (e) => {
     // To add a new todo list
     let todoListName = document.querySelector('#new-todo-list-input');
     if (!(todoListName.value)) {
@@ -60,7 +61,7 @@ addNewTodoList.addEventListener('click', function (e) {
     draggable(todoList);
 });
 
-// All events must be delegated
+// All event listeners for todo list functionality must be delegated
 window.addEventListener('click', (e) => {
     // To close "add todo list" window
     if (e.target.id === 'add-todo-list-form') {
@@ -72,7 +73,8 @@ window.addEventListener('click', (e) => {
         console.dir(e.target)
 
         // Gives the todo items of specific clicked todo list 
-        let specificTodoList = document.getElementById(`${e.target.parentElement.parentElement.id}`);
+        // let specificTodoList = document.getElementById(`${e.target.parentElement.parentElement.id}`);
+        let specificTodoList = e.target.closest('section');
         // Get specific todo lists' inputs
         let todoItemText = specificTodoList.children[1].children[0].children[0];
         let todoItemDueDate = specificTodoList.children[1].children[1].children[1];
@@ -94,10 +96,16 @@ window.addEventListener('click', (e) => {
             <input id="time" type="hidden" value="${todoItemDueTime.value}">
             <span class="text">${todoItemText.value}</span>
             <span class="control-container">
-                <span class="complete"><i class="fas fa-check"></i></span>
-                <span class="delete"><i class="fas fa-trash"></i></span>
+                <span class="complete check"><i class="fas fa-check check"></i></span>
+                <span class="delete remove"><i class="fas fa-trash remove"></i></span>
             </span>
         `;
+
+        // Do time comparison and assign background colors
+        if (todoItemDueDate.value && todoItemDueTime.value) {
+            console.log('hello')
+        }
+
         specificTodoList.children[2].append(todoItemContainer);
 
         // wait until compute transitions
@@ -109,6 +117,22 @@ window.addEventListener('click', (e) => {
         todoItemText.value = '';
         todoItemDueDate.value = '';
         todoItemDueTime.value = '';
+    }
+
+    // To check a todo item complete
+    if (e.target.className.includes('check')) {
+        e.target.closest('div').classList.toggle('completed');
+    }
+
+    // To delete a todo item
+    if (e.target.className.includes('remove')) {
+        e.target.closest('div').classList.add('hidden');
+
+        let timerId = setTimeout(() => {
+            // remove and clear timeout
+            e.target.closest('div').remove();
+            clearInterval(timerId);
+        }, 200)
     }
 })
 
