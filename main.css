@@ -239,11 +239,12 @@ body {
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid rgba(92, 92, 92, 0.192);
-    height: 2.5rem;
+    /* height: 2.5rem; */
+    height: fit-content;
     transition: all 200ms ease;
     opacity: 1;
     visibility: visible;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 .todo-item.hidden {
     height: 0;
