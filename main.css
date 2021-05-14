@@ -130,6 +130,25 @@ body {
 .todo-list:active {
     cursor: grabbing;
 }
+.delete-todolist-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.7rem;
+    height: 2.7rem;
+    font-size: 1.3rem;
+    background: white;
+    border-bottom-left-radius: 2rem;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.7);
+    transition: box-shadow 200ms ease;
+}
+.delete-todolist-button:hover {
+    box-shadow: 0 0 30px 0 rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
 
 /* Todo add form styling */
 .add-todo {
