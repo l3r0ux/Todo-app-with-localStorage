@@ -28,10 +28,10 @@ addNewTodoList.addEventListener('click', (e) => {
 
         <div class="add-todo">
             <div class="todo-text">
-                <input class="input" type="text">
+                <input class="input" type="text" placeholder="Enter your todo">
             </div>
             <div class="due-date">
-                <label class="due-label">Due:</label>
+                <label class="due-label">Due(optional):</label>
                 <input class="date" type="date">
                 <input class="time" type="time">
             </div>
@@ -46,10 +46,10 @@ addNewTodoList.addEventListener('click', (e) => {
     document.body.append(todoList);
 
     // Place it randomly within constraints of screen
-    let randomX = Math.random() * (window.innerHeight - todoList.offsetHeight);
-    let randomY = Math.random() * (window.innerWidth - todoList.offsetWidth);
-    todoList.style.top = `${randomX}px`;
-    todoList.style.left = `${randomY}px`;
+    let randomY = Math.random() * (window.innerHeight - todoList.offsetHeight);
+    let randomX = Math.random() * (window.innerWidth - todoList.offsetWidth);
+    todoList.style.left = `${randomX}px`;
+    todoList.style.top = `${randomY}px`;
     // Ensure it is always on top
     todoList.style.zIndex = 1;
 
@@ -57,8 +57,11 @@ addNewTodoList.addEventListener('click', (e) => {
     requestAnimationFrame(() => {
         todoList.classList.remove('hidden');
     })
+    // Timeout so that function draggable uses the final coordinates after animation
+    setTimeout(() => {
+        draggable(todoList);
+    }, 800)
     // Make todo list draggable on creation
-    draggable(todoList);
 });
 
 // All event listeners for todo list functionality must be delegated
@@ -70,8 +73,6 @@ window.addEventListener('click', (e) => {
 
     // To add a todo item to a specific list
     if (e.target.className === 'submit') {
-        console.dir(e.target)
-
         // Gives the todo items of specific clicked todo list 
         // let specificTodoList = document.getElementById(`${e.target.parentElement.parentElement.id}`);
         let specificTodoList = e.target.closest('section');
@@ -101,27 +102,24 @@ window.addEventListener('click', (e) => {
             </span>
         `;
 
-        // Do time comparison and assign background colors
         if (todoItemDueDate.value && todoItemDueTime.value) {
-            // Get current date
-            let currentDate = new Date();
-            console.log(currentDate.getTime())
-
-            // Extract hours and minutes from time input
+            // Extract hours and minutes from time input here outside calcTimeLeftAndColor -
+            // Because the due date will stay the same
+            // calculate the currentDate inside calcTimeLeftAndColor becuase it will change on each calculation
             let dueHours = parseFloat(todoItemDueTime.value.slice(0, 2))
             let dueMinutes = parseFloat(todoItemDueTime.value.slice(3, 5))
 
             // Get entered date in same format
-            let tempDate = new Date(todoItemDueDate.value);
-            tempDate.setHours(dueHours);
-            tempDate.setMinutes(dueMinutes);
-            console.log(tempDate.getTime())
+            let dueDate = new Date(todoItemDueDate.value);
+            dueDate.setHours(dueHours);
+            dueDate.setMinutes(dueMinutes);
 
-            // difference between due date and current date in seconds
-            let difference = (tempDate - currentDate) / 1000;
-            console.log(difference);
+            calcTimeLeftAndColor(todoItemContainer, dueDate);
 
-            
+            // Calculate on an interval so that colors can change live
+            let intervalId = setInterval(() => {
+                calcTimeLeftAndColor(todoItemContainer, dueDate, intervalId);
+            }, 1000)
         }
 
         specificTodoList.children[2].append(todoItemContainer);
@@ -154,8 +152,7 @@ window.addEventListener('click', (e) => {
     }
 })
 
-
 // Make all existing Todo-Lists draggable when init page with localstorage data
-document.querySelectorAll('.todo-list').forEach((list) => {
-    draggable(list);
-})
+// document.querySelectorAll('.todo-list').forEach((list) => {
+//     draggable(list);
+// })
