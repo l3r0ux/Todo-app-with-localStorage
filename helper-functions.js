@@ -1,16 +1,25 @@
 // Function to add a new todo list
 function addTodoList(id = null, zIndex = null, name = null, top = null, left = null, init = false) {
     let todoListName;
+
+    // if is not initial page load, set the name of new todo list from input, 
+    // and check if no name was present then focus
     if (!(init)) {
-        console.log('not init')
         // To add a new todo list
-        todoListName = document.querySelector('#new-todo-list-input');
-        if (!(todoListName.value)) {
-            return todoListName.focus();
+        todoListName = document.querySelector('#new-todo-list-input').value;
+        // Reset the todo list add input
+        document.querySelector('#new-todo-list-input').value = '';
+
+        if (!(todoListName)) {
+            return document.querySelector('#new-todo-list-input').focus();
         }
+        // else set the todoListName to the one provided in argument from localStorage
+    } else {
+        todoListName = name;
     }
 
     let todoListContainer = document.createElement('section');
+
     // if is initial load, use the id that came from localStorage
     if (init) {
         todoListContainer.id = id;
@@ -19,14 +28,17 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
         // convert random number into hexadecimals and use everything after the dot
         todoListContainer.id = Math.random().toString(16).substring(2);
     }
+
     todoListContainer.classList.add('todo-list');
     todoListContainer.classList.add('hidden');
-    // add in correct z-index if init is true
-    todoListContainer.style.zIndex = zIndex;
+    // add in correct z-index depending on what was got from localstorage if init true
+    if (init) {
+        todoListContainer.style.zIndex = zIndex;
+    }
     todoListContainer.innerHTML = `
         <div class="todo-list-title">
             <div class="delete-todolist-button delete-todolist"><i class="fas fa-trash delete-todolist"></i></div>
-            <span>${init ? name : todoListName.value}</span>
+            <span>${todoListName}</span>
         </div>
 
         <div class="add-todo">
@@ -45,10 +57,6 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
     `;
 
     addTodoForm.classList.add('hidden');
-    // if not init, reset input of todo list add form
-    if (!(init)) {
-        todoListName.value = '';
-    }
     document.body.append(todoListContainer);
 
     // if is init, use left and top position from local storage
@@ -214,6 +222,7 @@ function draggable(el) {
 }
 
 // Function to calculate time left until due date and assign correct colors accordingly
+// Runs on an interval for each todo list
 function calcTimeLeftAndColor(todo, dueDate, intervalId) {
     // Do time comparison and assign background colors if a date was specified
 
@@ -250,5 +259,23 @@ function calcTimeLeftAndColor(todo, dueDate, intervalId) {
             todo.classList.add('due-date-passed');
             clearInterval(intervalId);
         }
+    }
+}
+
+// On page load, render everything from localstorage
+function init() {
+    const todoLists = JSON.parse(localStorage.getItem('todolists'));
+    if (todoLists) {
+        // for every todo list in local storage:
+        todoLists.forEach((list) => {
+            // make a todo list:
+            // All the arguments are what gets remembered
+            addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true);
+            // and render all of that specific todo lists' todos into it
+            // All the arguments are what gets remembered
+            list.todos.forEach((todoItem) => {
+                addTodo(null, list.id, todoItem.completed, todoItem.innerText, todoItem.dueDate, todoItem.dueTime, true);
+            })
+        })
     }
 }

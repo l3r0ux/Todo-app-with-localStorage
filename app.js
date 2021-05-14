@@ -2,19 +2,8 @@ const addTodoForm = document.querySelector('#add-todo-list-form');
 const showAddTodoForm = document.querySelector('#show-add-todo-list-form');
 const addNewTodoList = document.querySelector('#add-new-todo-list');
 
-// On page load, render everything from localstorage
-const todoLists = JSON.parse(localStorage.getItem('todolists'));
-if (todoLists) {
-    // for every todo list in local storage:
-    todoLists.forEach((list) => {
-        // make a todo list:
-        addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true);
-        // and render all of that specific todo lists' todos into it
-        list.todos.forEach((todoItem) => {
-            addTodo(null, list.id, todoItem.completed, todoItem.innerText, todoItem.dueDate, todoItem.dueTime, true);
-        })
-    })
-}
+
+init();
 
 
 // To show new todo list form
