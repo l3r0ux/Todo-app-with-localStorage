@@ -211,7 +211,7 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     }
 
 
-    specificTodoList.children[3].append(todoItemContainer);
+    specificTodoList.children[3].prepend(todoItemContainer);
 
     // wait until compute transitions
     requestAnimationFrame(() => {
