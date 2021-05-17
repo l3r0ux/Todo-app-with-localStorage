@@ -129,12 +129,13 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     // Append a todo item
     let todoItemContainer = document.createElement('div');
     todoItemContainer.classList.add('todo-item');
+    todoItemContainer.classList.add('todo');
     todoItemContainer.classList.add('hidden');
     completed ? todoItemContainer.classList.add('completed') : '';
     todoItemContainer.innerHTML = `
         <input id="date" type="hidden" value="${todoItemDueDate}">
         <input id="time" type="hidden" value="${todoItemDueTime}">
-        <span class="text">${todoItemText}</span>
+        <span class="text todo">${todoItemText}</span>
         <span class="control-container">
             <span class="complete check"><i class="fas fa-check check"></i></span>
             <span class="delete remove"><i class="fas fa-trash remove"></i></span>
@@ -160,6 +161,52 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
             calcTimeLeftAndColor(todoItemContainer, dueDate, intervalId);
         }, 1000)
     }
+
+
+    // Make this todo hoverable for showing due date
+    let timerId;
+    let dueX;
+    let dueY;
+    // To keep track of mouse in todoItemContainer to place due bubble precisely
+    todoItemContainer.addEventListener('mousemove', (e) => {
+        dueX = e.clientX;
+        dueY = e.clientY;
+    })
+    // to see if mouse is over todo item container and place it
+    todoItemContainer.addEventListener('mouseover', (e) => {
+        // only run this code if hovering over a todo item
+        // timout so that duetime box only appears when hovering for a certain time
+        timerId = setTimeout(() => {
+            // make sure date is present
+            if (todoItemContainer.children[0].value) {
+                let duetimeContainer = document.createElement('div');
+                duetimeContainer.classList.add('duetime-peek');
+                duetimeContainer.classList.add('hidden');
+                // placing where the cursor is
+                duetimeContainer.style.top = `${dueY}px`;
+                duetimeContainer.style.left = `${dueX}px`;
+                duetimeContainer.innerHTML = `Due: ${todoItemContainer.children[0].value} ${todoItemContainer.children[1].value}`;
+
+                document.body.prepend(duetimeContainer);
+
+                requestAnimationFrame(() => {
+                    duetimeContainer.classList.remove('hidden');
+                })
+            }
+        }, 500)
+    })
+    // Clearing timout id if leave certain todo before the timeout
+    todoItemContainer.addEventListener('mouseout', () => {
+        clearTimeout(timerId);
+        // only remove if the todo that was hovered over before had a duedate and there is a duetime-peek to remove
+        if (document.querySelector('.duetime-peek') && todoItemContainer.children[0].value) {
+            document.querySelector('.duetime-peek').classList.add('hidden');
+            setTimeout(() => {
+                document.querySelector('.duetime-peek').remove()
+            }, 200)
+        }
+    })
+
 
     specificTodoList.children[3].append(todoItemContainer);
 

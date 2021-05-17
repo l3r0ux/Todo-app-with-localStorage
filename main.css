@@ -256,6 +256,7 @@ body {
 /* Todo list items */
 /* Starting color of todos is the blue, and the due date gets, it gets more orange */
 .todo-items {
+    cursor: default;
     max-height: 0;
     opacity: 0;
     transition: all 200ms ease;
@@ -365,4 +366,24 @@ body {
 .delete:hover {
     box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.7);
     cursor: pointer;
+}
+
+/* Styling of due date that appears when hovering over todo */
+.duetime-peek {
+    opacity: 1;
+    position: fixed;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    width: fit-content;
+    padding: 0.2rem 0.4rem 0.2rem 0.4rem;
+    border-radius: 2rem;
+    background-color: rgba(255, 255, 255, 0.932);
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.7);
+    transition: opacity 200ms ease;
+}
+.duetime-peek.hidden {
+    opacity: 0;
 }

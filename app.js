@@ -60,6 +60,7 @@ window.addEventListener('click', (e) => {
     // To add a todo item to a specific list by pressing button
     if (e.target.className === 'submit') {
         addTodo(e);
+        // hoverForDueDate();
         updateLS();
     }
 
