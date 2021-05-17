@@ -37,8 +37,15 @@ window.addEventListener('click', (e) => {
 
     // To expand or minimize the todo adding form
     if (e.target.className.includes('expand-form')) {
-        e.target.closest('i').classList.toggle('expanded');
-        e.target.offsetParent.children[1].classList.toggle('expanded');
+        e.target.closest('i').classList.toggle('form-expanded');
+        e.target.offsetParent.children[1].classList.toggle('form-expanded');
+        updateLS();
+    }
+
+    // To expand and minimize todos
+    if (e.target.className.includes('expand-todos')) {
+        e.target.closest('i').classList.toggle('todos-expanded');
+        e.target.offsetParent.children[3].classList.toggle('todos-expanded');
         updateLS();
     }
 

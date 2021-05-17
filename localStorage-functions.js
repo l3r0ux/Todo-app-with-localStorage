@@ -8,11 +8,9 @@ function updateLS() {
         // To build up array with all todo list items for this specific todo list
         let todolistItems = [];
 
-        // console.dir(list.children);
-
         // Loop to build up the todolist items for specific todo list
-        if (list.children[2].childNodes) {
-            list.children[2].childNodes.forEach((todo) => {
+        if (list.children[3].childNodes) {
+            list.children[3].childNodes.forEach((todo) => {
                 todolistItems.push(
                     {
                         completed: todo.classList.contains('completed'),
@@ -30,8 +28,8 @@ function updateLS() {
             name: list.children[0].children[1].innerText,
             top: list.style.top,
             left: list.style.left,
-            formExpanded: list.children[1].classList.contains('expanded'),
-            // todosExpanded: ,
+            formExpanded: list.children[1].classList.contains('form-expanded'),
+            todosExpanded: list.children[3].classList.contains('todos-expanded'),
             zIndex: list.style.zIndex,
             todos: todolistItems
         })

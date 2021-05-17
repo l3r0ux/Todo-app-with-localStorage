@@ -1,5 +1,5 @@
 // Function to add a new todo list
-function addTodoList(id = null, zIndex = null, name = null, top = null, left = null, init = false, formExpanded = true) {
+function addTodoList(id = null, zIndex = null, name = null, top = null, left = null, init = false, formExpanded = true, todosExpanded = true) {
     let todoListName;
 
     // if is not initial page load, set the name of new todo list from input, 
@@ -39,10 +39,10 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
         <div class="todo-list-title">
             <div class="delete-todolist-button delete-todolist"><i class="fas fa-trash delete-todolist"></i></div>
             <span>${todoListName}</span>
-            <div class="form-control"><i class="fas fa-caret-down expand-form form-control ${formExpanded ? 'expanded' : ''}"></i></div>
+            <div><i class="fas fa-caret-down expand-form ${formExpanded ? 'form-expanded' : ''}"></i></div>
         </div>
 
-        <div class="add-todo ${formExpanded ? 'expanded' : ''}">
+        <div class="add-todo ${formExpanded ? 'form-expanded' : ''}">
             <div class="todo-text">
                 <input class="input" type="text" placeholder="Enter your todo">
             </div>
@@ -54,7 +54,8 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
             <button class="submit" type="submit">Add</button>
         </div>
         
-        <div class="todo-items"></div>
+        <div class="expand-todo-items-control"><i class="fas fa-caret-down expand-todos ${todosExpanded ? 'todos-expanded' : ''}"></i></div>
+        <div class="todo-items ${todosExpanded ? 'todos-expanded' : ''}"></div>
     `;
 
     addTodoForm.classList.add('hidden');
@@ -160,7 +161,7 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         }, 1000)
     }
 
-    specificTodoList.children[2].append(todoItemContainer);
+    specificTodoList.children[3].append(todoItemContainer);
 
     // wait until compute transitions
     requestAnimationFrame(() => {
@@ -271,7 +272,7 @@ function init() {
         todoLists.forEach((list) => {
             // make a todo list:
             // All the arguments are what gets remembered
-            addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true, list.formExpanded);
+            addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true, list.formExpanded, list.todosExpanded);
             // and render all of that specific todo lists' todos into it
             // All the arguments are what gets remembered
             list.todos.forEach((todoItem) => {
