@@ -35,6 +35,13 @@ window.addEventListener('click', (e) => {
 
     }
 
+    // To expand or minimize the todo adding form
+    if (e.target.className.includes('expand-form')) {
+        e.target.closest('i').classList.toggle('expanded');
+        e.target.offsetParent.children[1].classList.toggle('expanded');
+        updateLS();
+    }
+
     // To add a todo item to a specific list
     if (e.target.className === 'submit') {
         addTodo(e);

@@ -1,5 +1,5 @@
 // Function to add a new todo list
-function addTodoList(id = null, zIndex = null, name = null, top = null, left = null, init = false) {
+function addTodoList(id = null, zIndex = null, name = null, top = null, left = null, init = false, formExpanded = true) {
     let todoListName;
 
     // if is not initial page load, set the name of new todo list from input, 
@@ -39,9 +39,10 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
         <div class="todo-list-title">
             <div class="delete-todolist-button delete-todolist"><i class="fas fa-trash delete-todolist"></i></div>
             <span>${todoListName}</span>
+            <div class="form-control"><i class="fas fa-caret-down expand-form form-control ${formExpanded ? 'expanded' : ''}"></i></div>
         </div>
 
-        <div class="add-todo">
+        <div class="add-todo ${formExpanded ? 'expanded' : ''}">
             <div class="todo-text">
                 <input class="input" type="text" placeholder="Enter your todo">
             </div>
@@ -270,7 +271,7 @@ function init() {
         todoLists.forEach((list) => {
             // make a todo list:
             // All the arguments are what gets remembered
-            addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true);
+            addTodoList(list.id, list.zIndex, list.name, list.top, list.left, true, list.formExpanded);
             // and render all of that specific todo lists' todos into it
             // All the arguments are what gets remembered
             list.todos.forEach((todoItem) => {

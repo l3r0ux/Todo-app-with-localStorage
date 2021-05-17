@@ -121,10 +121,12 @@ body {
 }
 /* Title styling */
 .todo-list-title {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
+    text-align: center;
     padding: 2rem;
+    /* padding-bottom: 0.5rem; */
     font-size: 1.5rem;
     background-color: rgba(255, 255, 255, 0.219);
 }
@@ -150,6 +152,17 @@ body {
     box-shadow: 0 0 30px 0 rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
+.expand-form {
+    position: absolute;
+    z-index: 5;
+    right: 2rem;
+    cursor: pointer;
+    transform: rotate(0);
+    transition: all 200ms ease;
+}
+.expand-form.expanded {
+    transform: rotate(90deg);
+}
 
 /* Todo add form styling */
 .add-todo {
@@ -157,10 +170,17 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 7rem;
+    height: 0;
+    opacity: 0;
     width: 100%;
-    padding-bottom: 1rem;
+    padding-bottom: 0;
     background-color: rgba(255, 255, 255, 0.219);
+    transition: all 200ms ease;
+}
+.add-todo.expanded {
+    opacity: 1;
+    padding-bottom: 1rem;
+    height: 7rem;
 }
 .todo-text {
     display: flex;
