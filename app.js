@@ -11,11 +11,19 @@ showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
 })
 
-// To add a new todo list
+// To add a new todo list by clicking button
 addNewTodoList.addEventListener('click', (e) => {
     addTodoList();
     updateLS();
 });
+// and by pressing enter
+window.addEventListener('keydown', (e) => {
+    // Check to see that enter was pressed and that the add todo form is on screen
+    if (e.key === 'Enter' && (!(addTodoForm.classList.contains('hidden')))) {
+        addTodoList();
+        updateLS();
+    }
+})
 
 // All event listeners for todo list functionality must be delegated
 window.addEventListener('click', (e) => {
@@ -49,7 +57,7 @@ window.addEventListener('click', (e) => {
         updateLS();
     }
 
-    // To add a todo item to a specific list
+    // To add a todo item to a specific list by pressing button
     if (e.target.className === 'submit') {
         addTodo(e);
         updateLS();
