@@ -3,6 +3,7 @@
 The link: https://local-storage-todo-list.herokuapp.com/index.html
 
 This todo app remembers the todo lists and items you had in your browser, so if you close and open the website, your todos will still be there.
+Please note that this only works for desktop PCs. It is not mobile responsive.
 
 Key Features:
 - Ability to add multiple todo lists, each with their own respective todo items.
