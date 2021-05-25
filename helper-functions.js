@@ -142,17 +142,27 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         </span>
     `;
 
-    if (todoItemDueDate && todoItemDueTime) {
+    if (todoItemDueDate) {
         // Extract hours and minutes from time input here outside calcTimeLeftAndColor -
         // Because the due date will stay the same
         // calculate the currentDate inside calcTimeLeftAndColor becuase it will change on each calculation
-        let dueHours = parseFloat(todoItemDueTime.slice(0, 2))
-        let dueMinutes = parseFloat(todoItemDueTime.slice(3, 5))
 
+        // Only get hours and minutes if the time input had a value
+        let dueHours;
+        let dueMinutes;
+        todoItemDueTime ? dueHours = parseFloat(todoItemDueTime.slice(0, 2)) : null;
+        todoItemDueTime ? dueMinutes = parseFloat(todoItemDueTime.slice(3, 5)) : null;
+        
         // Get entered date in same format
         let dueDate = new Date(todoItemDueDate);
-        dueDate.setHours(dueHours);
-        dueDate.setMinutes(dueMinutes);
+        // if time input was present, use that: otherwise use the default of 8am
+        if (dueHours && dueMinutes) {
+            dueDate.setHours(dueHours);
+            dueDate.setMinutes(dueMinutes);
+        } else {
+            dueDate.setHours(8);
+            dueDate.setMinutes(0);
+        }
 
         calcTimeLeftAndColor(todoItemContainer, dueDate);
 
