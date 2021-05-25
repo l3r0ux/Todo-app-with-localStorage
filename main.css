@@ -215,7 +215,7 @@ body {
     margin-top: 0.8rem;
     margin-bottom: 0.8rem;
     padding-left: 0.5rem;
-    width: 29%;
+    /* width: 29%; */
     height: 2rem;
     border: none;
     border-radius: 1rem;
@@ -223,10 +223,12 @@ body {
     transition: box-shadow 200ms ease;
 }
 .date {
+    width: 40%;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
 }
 .time {
+    width: 18%;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 1px solid rgba(201, 200, 200, 0.459);
