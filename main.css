@@ -321,14 +321,15 @@ body {
 }
 .todo-item.due-date-passed .text {
     color: rgba(0, 0, 0, 0.603);
+    text-decoration: line-through;
 }
-.todo-item.due-date-passed .text::after {
+/* .todo-item.due-date-passed .control-container::before {
     content: 'Due Date Missed';
     color: white;
     position: relative;
     left: 50%;
     transform: translate(-50%, 0);
-}
+} */
 .text {
     max-width: 80%;
 }
