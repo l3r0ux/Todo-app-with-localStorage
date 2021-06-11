@@ -289,7 +289,6 @@ body {
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid rgba(92, 92, 92, 0.192);
-    /* height: 2.5rem; */
     height: fit-content;
     transition: all 200ms ease;
     opacity: 1;
@@ -323,22 +322,20 @@ body {
     color: rgba(0, 0, 0, 0.603);
     text-decoration: line-through;
 }
-/* .todo-item.due-date-passed .control-container::before {
-    content: 'Due Date Missed';
-    color: white;
-    position: relative;
-    left: 50%;
-    transform: translate(-50%, 0);
-} */
 .text {
     max-width: 80%;
+    outline: none;
 }
 .control-container {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
     width: 4.5rem;
+    opacity: 1;
+    visibility: visible;
+    transition: all 200ms ease;
 }
 .complete {
+    position: absolute;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -347,15 +344,20 @@ body {
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.7);
     width: 2rem;
     height: 2rem;
-    transition: box-shadow 200ms ease;
-    color: black;
+    transition: all 300ms ease;
 }
 .complete:hover {
     box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.7);
     cursor: pointer;
 }
+.complete.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+}
 .delete {
-    text-decoration: none !important;
+    position: absolute;
+    left: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -364,11 +366,38 @@ body {
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.7);
     width: 2rem;
     height: 2rem;
-    transition: box-shadow 200ms ease;
+    transition: all 300ms ease;
 }
 .delete:hover {
     box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.7);
     cursor: pointer;
+}
+.delete.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+}
+.update {
+    position: relative;
+    left: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.7);
+    width: 2rem;
+    height: 2rem;
+    transition: all 300ms ease;
+}
+.update:hover {
+    box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
+.update.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
 }
 
 /* Styling of due date that appears when hovering over todo */

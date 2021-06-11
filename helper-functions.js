@@ -135,10 +135,11 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     todoItemContainer.innerHTML = `
         <input id="date" type="hidden" value="${todoItemDueDate}">
         <input id="time" type="hidden" value="${todoItemDueTime}">
-        <span class="text todo">${todoItemText}</span>
+        <span class="text todo" contenteditable>${todoItemText}</span>
         <span class="control-container">
             <span class="complete check"><i class="fas fa-check check"></i></span>
             <span class="delete remove"><i class="fas fa-trash remove"></i></span>
+            <span class="update hidden"><i class="fas fa-edit"></i></span>
         </span>
     `;
 
@@ -152,7 +153,7 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         let dueMinutes;
         todoItemDueTime ? dueHours = parseFloat(todoItemDueTime.slice(0, 2)) : null;
         todoItemDueTime ? dueMinutes = parseFloat(todoItemDueTime.slice(3, 5)) : null;
-        
+
         // Get entered date in same format
         let dueDate = new Date(todoItemDueDate);
         // if time input was present, use that: otherwise use the default of 8am

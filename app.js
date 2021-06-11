@@ -25,8 +25,43 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+// Get clicked elements for todo item updating
+let todoText, controlContainer, completeTodo, deleteTodo, updateTodo;
 // All event listeners for todo list functionality must be delegated
 window.addEventListener('click', (e) => {
+    // on document click, if todoText is defined(user clicked on a todo previously), adjust that previous todo classes accordingly
+    // and save what was in the todo text
+    if (todoText) {
+        completeTodo.classList.remove('hidden');
+        deleteTodo.classList.remove('hidden');
+        // And also make its update button hidden again
+        updateTodo.classList.add('hidden');
+        updateLS();
+    }
+    // If the click was on todo item text, set and save variables outside event listener to preserve them
+    if ((e.target.classList.contains('text'))) {
+        todoText = e.target.closest('span');
+        controlContainer = e.target.closest('span').nextElementSibling;
+        completeTodo = controlContainer.children[0];
+        deleteTodo = controlContainer.children[1];
+        updateTodo = controlContainer.children[2];
+
+        console.log(completeTodo, deleteTodo, updateTodo)
+
+        // If span is focussed, show update button
+    if (todoText && todoText === document.activeElement) {
+        completeTodo.classList.add('hidden');
+        deleteTodo.classList.add('hidden');
+        updateTodo.classList.remove('hidden');
+    } else {
+        completeTodo.classList.remove('hidden');
+        deleteTodo.classList.remove('hidden');
+        updateTodo.classList.add('hidden');
+    }
+    }
+    
+
+
     // To close "add todo list" window
     if (e.target.id === 'add-todo-list-form') {
         addTodoForm.classList.add('hidden');
