@@ -93,6 +93,7 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
 
 
 // To add a todo item
+// let intervalId;
 function addTodo(e = null, listId = null, completed = null, text = null, dueDate = null, dueTime = null, init = false) {
     let specificTodoList;
     let todoItemText;
@@ -139,11 +140,81 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         <span class="control-container">
             <span class="complete check"><i class="fas fa-check check"></i></span>
             <span class="delete remove"><i class="fas fa-trash remove"></i></span>
-            <span class="update hidden"><i class="fas fa-edit"></i></span>
+            <span class="update-text hidden"><i class="fas fa-edit"></i></span>
+            <span class="update-date hidden update-due-date"><i class="fas fa-calendar update-due-date"></i></span>
         </span>
     `;
 
+
+    setTimeLeftAndColor(todoItemContainer, todoItemDueDate, todoItemDueTime);
+
+
+    // Add listeners to add time left bubble on hover on todo item creation
+    // Make this todo hoverable for showing due date
+    let timerId;
+    let dueX;
+    let dueY;
+    // To keep track of mouse in todoItemContainer to place due bubble precisely
+    todoItemContainer.addEventListener('mousemove', (e) => {
+        dueX = e.clientX;
+        dueY = e.clientY;
+    })
+    // to see if mouse is over todo item container and place it
+    todoItemContainer.addEventListener('mouseover', (e) => {
+        // only run this code if hovering over a todo item
+        // timout so that duetime box only appears when hovering for a certain time
+        timerId = setTimeout(() => {
+            // make sure date is present
+            if (todoItemContainer.children[0].value) {
+                let duetimeContainer = document.createElement('div');
+                duetimeContainer.classList.add('duetime-peek');
+                duetimeContainer.classList.add('hidden');
+                // placing where the cursor is
+                duetimeContainer.style.top = `${dueY}px`;
+                duetimeContainer.style.left = `${dueX}px`;
+                duetimeContainer.innerHTML = `Due: ${todoItemContainer.children[0].value} ${todoItemContainer.children[1].value}`;
+
+                document.body.prepend(duetimeContainer);
+
+                requestAnimationFrame(() => {
+                    duetimeContainer.classList.remove('hidden');
+                })
+            }
+        }, 500)
+    })
+    // Clearing timout id if leave certain todo before the timeout
+    todoItemContainer.addEventListener('mouseout', () => {
+        clearTimeout(timerId);
+        // only remove if the todo that was hovered over before had a duedate and there is a duetime-peek to remove
+        if (document.querySelector('.duetime-peek') && todoItemContainer.children[0].value) {
+            document.querySelector('.duetime-peek').classList.add('hidden');
+            setTimeout(() => {
+                document.querySelector('.duetime-peek').remove()
+            }, 200)
+        }
+    })
+
+
+    specificTodoList.children[3].append(todoItemContainer);
+
+    // wait until compute transitions
+    requestAnimationFrame(() => {
+        todoItemContainer.classList.remove('hidden');
+    })
+
+    if (!(init)) {
+        specificTodoList.children[1].children[0].children[0].value = '';
+        specificTodoList.children[1].children[1].children[1].value = '';
+        specificTodoList.children[1].children[1].children[2].value = '';
+    }
+}
+
+// Function to calculate time left on load an set colors
+function setTimeLeftAndColor(todoItemContainer, todoItemDueDate, todoItemDueTime) {
     if (todoItemDueDate) {
+        todoItemContainer.children[0].value = todoItemDueDate;
+        todoItemContainer.children[1].value = todoItemDueTime;
+
         // Extract hours and minutes from time input here outside calcTimeLeftAndColor -
         // Because the due date will stay the same
         // calculate the currentDate inside calcTimeLeftAndColor becuase it will change on each calculation
@@ -164,75 +235,46 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
             dueDate.setHours(8);
             dueDate.setMinutes(0);
         }
+        // Do time comparison and assign background colors if a date was specified
+        // Get current date
+        let currentDate = new Date();
 
-        calcTimeLeftAndColor(todoItemContainer, dueDate);
+        // difference between due date and current date in seconds
+        let difference = ((dueDate - currentDate) / 1000).toFixed(2);
+
+        // If 5 days or more left
+        if (difference >= 432000) {
+            todoItemContainer.style.backgroundColor = 'rgba(0, 202, 252, 0.5)';
+        }
+        // If between 3 and 5 days left
+        else if (difference >= 259200) {
+            todoItemContainer.style.backgroundColor = 'rgba(100, 150, 200, 0.5)';
+        }
+        // If between 2 and 3 days left
+        else if (difference >= 172800) {
+            todoItemContainer.style.backgroundColor = 'rgba(150, 100, 100, 0.5)';
+        }
+        // If between 1 and 2 days left
+        else if (difference >= 86400) {
+            todoItemContainer.style.backgroundColor = 'rgba(200, 50, 0, 0.5)';
+        }
+        // Less than 1 day left
+        else if (difference >= 0) {
+            todoItemContainer.style.backgroundColor = 'rgba(255, 20, 0, 0.5)';
+        }
+        // If time is up
+        else {
+            // Prevent adding due-date-passed class if completed class is present
+            if (!(todoItemContainer.classList.contains('completed'))) {
+                todoItemContainer.classList.add('due-date-passed');
+                // clearInterval(intervalId);
+            }
+        }
 
         // Calculate on an interval so that colors can change live
-        let intervalId = setInterval(() => {
-            calcTimeLeftAndColor(todoItemContainer, dueDate, intervalId);
-        }, 1000)
-    }
-
-
-    // Only add these listeners to todo items with due dates present
-    if (todoItemContainer.children[0].value) {
-        // Make this todo hoverable for showing due date
-        let timerId;
-        let dueX;
-        let dueY;
-        // To keep track of mouse in todoItemContainer to place due bubble precisely
-        todoItemContainer.addEventListener('mousemove', (e) => {
-            dueX = e.clientX;
-            dueY = e.clientY;
-        })
-        // to see if mouse is over todo item container and place it
-        todoItemContainer.addEventListener('mouseover', (e) => {
-            // only run this code if hovering over a todo item
-            // timout so that duetime box only appears when hovering for a certain time
-            timerId = setTimeout(() => {
-                // make sure date is present
-                if (todoItemContainer.children[0].value) {
-                    let duetimeContainer = document.createElement('div');
-                    duetimeContainer.classList.add('duetime-peek');
-                    duetimeContainer.classList.add('hidden');
-                    // placing where the cursor is
-                    duetimeContainer.style.top = `${dueY}px`;
-                    duetimeContainer.style.left = `${dueX}px`;
-                    duetimeContainer.innerHTML = `Due: ${todoItemContainer.children[0].value} ${todoItemContainer.children[1].value}`;
-
-                    document.body.prepend(duetimeContainer);
-
-                    requestAnimationFrame(() => {
-                        duetimeContainer.classList.remove('hidden');
-                    })
-                }
-            }, 500)
-        })
-        // Clearing timout id if leave certain todo before the timeout
-        todoItemContainer.addEventListener('mouseout', () => {
-            clearTimeout(timerId);
-            // only remove if the todo that was hovered over before had a duedate and there is a duetime-peek to remove
-            if (document.querySelector('.duetime-peek') && todoItemContainer.children[0].value) {
-                document.querySelector('.duetime-peek').classList.add('hidden');
-                setTimeout(() => {
-                    document.querySelector('.duetime-peek').remove()
-                }, 200)
-            }
-        })
-    }
-
-
-    specificTodoList.children[3].append(todoItemContainer);
-
-    // wait until compute transitions
-    requestAnimationFrame(() => {
-        todoItemContainer.classList.remove('hidden');
-    })
-
-    if (!(init)) {
-        specificTodoList.children[1].children[0].children[0].value = '';
-        specificTodoList.children[1].children[1].children[1].value = '';
-        specificTodoList.children[1].children[1].children[2].value = '';
+        // intervalId = setInterval(() => {
+        //     calcTimeLeftAndColor(todoItemContainer, dueDate, intervalId);
+        // }, 1000)
     }
 }
 
@@ -281,47 +323,6 @@ function draggable(el) {
         let deltaY = e.clientY - mouseY;
         el.style.left = elementX + deltaX + 'px';
         el.style.top = elementY + deltaY + 'px';
-    }
-}
-
-// Function to calculate time left until due date and assign correct colors accordingly
-// Runs on an interval for each todo list
-function calcTimeLeftAndColor(todo, dueDate, intervalId) {
-    // Do time comparison and assign background colors if a date was specified
-
-    // Get current date
-    let currentDate = new Date();
-
-    // difference between due date and current date in seconds
-    let difference = ((dueDate - currentDate) / 1000).toFixed(2);
-
-    // If 5 days or more left
-    if (difference >= 432000) {
-        todo.style.backgroundColor = 'rgba(0, 202, 252, 0.5)';
-    }
-    // If between 3 and 5 days left
-    else if (difference >= 259200) {
-        todo.style.backgroundColor = 'rgba(100, 150, 200, 0.5)';
-    }
-    // If between 2 and 3 days left
-    else if (difference >= 172800) {
-        todo.style.backgroundColor = 'rgba(150, 100, 100, 0.5)';
-    }
-    // If between 1 and 2 days left
-    else if (difference >= 86400) {
-        todo.style.backgroundColor = 'rgba(200, 50, 0, 0.5)';
-    }
-    // Less than 1 day left
-    else if (difference >= 0) {
-        todo.style.backgroundColor = 'rgba(255, 20, 0, 0.5)';
-    }
-    // If time is up
-    else {
-        // Prevent adding due-date-passed class if completed class is present
-        if (!(todo.classList.contains('completed'))) {
-            todo.classList.add('due-date-passed');
-            clearInterval(intervalId);
-        }
     }
 }
 
