@@ -102,7 +102,6 @@ window.addEventListener('click', (e) => {
         updateDueDateContainer.classList.remove('visible');
     }
     if (e.target.classList.contains('clear-due-date')) {
-        console.log('CLEAR THIS BITCH!');
         setTimeLeftAndColor(todo, null, null);
         todo.children[0].value = '';
         todo.children[1].value = '';
