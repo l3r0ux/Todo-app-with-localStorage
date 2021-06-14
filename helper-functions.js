@@ -61,17 +61,23 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
     addTodoForm.classList.add('hidden');
     document.body.append(todoListContainer);
 
-    // if is init, use left and top position from local storage
-    // else generate new random position
-    if (init) {
-        todoListContainer.style.left = left;
-        todoListContainer.style.top = top;
+    // If is on mobile, dont make todo list positions random
+    if (window.innerWidth < 1025) {
+        todoListContainer.style.top = '';
+        todoListContainer.style.left = '';
     } else {
-        // Place it randomly within constraints of screen
-        let randomY = Math.random() * (window.innerHeight - todoListContainer.offsetHeight);
-        let randomX = Math.random() * (window.innerWidth - todoListContainer.offsetWidth);
-        todoListContainer.style.left = `${randomX}px`;
-        todoListContainer.style.top = `${randomY}px`;
+        // if is init, use left and top position from local storage
+        // else generate new random position
+        if (init) {
+            todoListContainer.style.left = left;
+            todoListContainer.style.top = top;
+        } else {
+            // Place it randomly within constraints of screen
+            let randomY = Math.random() * (window.innerHeight - todoListContainer.offsetHeight);
+            let randomX = Math.random() * (window.innerWidth - todoListContainer.offsetWidth);
+            todoListContainer.style.left = `${randomX}px`;
+            todoListContainer.style.top = `${randomY}px`;
+        }
     }
 
     // only ensure its on top if add a new todo list/init is false/its not the inital page load
@@ -84,11 +90,15 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
     requestAnimationFrame(() => {
         todoListContainer.classList.remove('hidden');
     })
-    // Timeout so that function draggable uses the final coordinates after animation
-    setTimeout(() => {
-        // Make specific todo draggable
-        draggable(todoListContainer);
-    }, 800)
+    if (window.innerWidth > 1024) {
+        // Timeout so that function draggable uses the final coordinates after animation
+        setTimeout(() => {
+            // Make specific todo draggable
+
+            draggable(todoListContainer);
+
+        }, 800)
+    }
 }
 
 
@@ -134,14 +144,14 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     todoItemContainer.classList.add('hidden');
     completed ? todoItemContainer.classList.add('completed') : '';
     todoItemContainer.innerHTML = `
-        <input id="date" type="hidden" value="${todoItemDueDate}">
-        <input id="time" type="hidden" value="${todoItemDueTime}">
+        <input id="date" type="hidden" value="">
+        <input id="time" type="hidden" value="">
         <span class="text todo" contenteditable>${todoItemText}</span>
         <span class="control-container">
-            <span class="complete check"><i class="fas fa-check check"></i></span>
-            <span class="delete remove"><i class="fas fa-trash remove"></i></span>
-            <span class="update-text hidden"><i class="fas fa-edit"></i></span>
-            <span class="update-date hidden update-due-date"><i class="fas fa-calendar update-due-date"></i></span>
+            <span class="complete todo-button check"><i class="fas fa-check check"></i></span>
+            <span class="delete todo-button remove"><i class="fas fa-trash remove"></i></span>
+            <span class="update-text todo-button hidden"><i class="fas fa-edit"></i></span>
+            <span class="update-date todo-button hidden update-due-date"><i class="fas fa-calendar update-date"></i></span>
         </span>
     `;
 
@@ -211,6 +221,10 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
 
 // Function to calculate time left on load an set colors
 function setTimeLeftAndColor(todoItemContainer, todoItemDueDate, todoItemDueTime) {
+    if (!(todoItemDueDate)) {
+        return todoItemContainer.style.backgroundColor = '';
+    }
+
     if (todoItemDueDate) {
         todoItemContainer.children[0].value = todoItemDueDate;
         todoItemContainer.children[1].value = todoItemDueTime;

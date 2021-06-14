@@ -41,7 +41,7 @@ window.addEventListener('click', (e) => {
         updateLS();
     }
     // If the click was on todo item text, set and save variables outside event listener to preserve them
-    if (e.target.parentElement.classList.contains('due-date-passed')) {
+    if (e.target.parentElement.classList.contains('due-date-passed') || e.target.parentElement.classList.contains('completed')) {
         return;
     } else {
         if ((e.target.classList.contains('text'))) {
@@ -67,9 +67,22 @@ window.addEventListener('click', (e) => {
         }
     }
 
+    let oldDueDate;
+    let oldDueTime;
+    let updatedDate;
+    let updatedTime;
     // When click on update-date button
-    if (e.target.className.includes('update-due-date')) {
+    if (e.target.className.includes('update-date')) {
+        // Get associated todo
         todo = e.target.closest('.todo-item');
+        // Get its previous input values if any to pre-populate update date inputs
+        oldDueDate = todo.children[0].value;
+        oldDueTime = todo.children[1].value;
+        // Set update due date forms inputs to the old due date
+        updatedDate = document.querySelector('.updated-date');
+        updatedTime = document.querySelector('.updated-time');
+        updatedDate.value = oldDueDate;
+        updatedTime.value = oldDueTime;
         updateDueDateContainer.classList.add('visible');
     }
     if (e.target.classList.contains('submit-due-date-update')) {
@@ -88,7 +101,15 @@ window.addEventListener('click', (e) => {
     if (e.target.classList.contains('update-due-date-container')) {
         updateDueDateContainer.classList.remove('visible');
     }
-    
+    if (e.target.classList.contains('clear-due-date')) {
+        console.log('CLEAR THIS BITCH!');
+        setTimeLeftAndColor(todo, null, null);
+        todo.children[0].value = '';
+        todo.children[1].value = '';
+        updateDueDateContainer.classList.remove('visible');
+        updateLS();
+    }
+
 
 
     // To close "add todo list" window
