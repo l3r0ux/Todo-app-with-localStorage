@@ -1,6 +1,5 @@
 const addTodoForm = document.querySelector('#add-todo-list-form');
 const showAddTodoForm = document.querySelector('#show-add-todo-list-form');
-const addTodoListForm = document.getElementById('add-list-form');
 
 
 init();
@@ -11,22 +10,19 @@ showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
 })
 
-// To add todo list on form submit
-addTodoListForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    addTodoList();
-    updateLS();
-});
-
-// To add a todo item to a specific list by pressing button or enter
+// To add a todo list to page or todo item to a specific list by pressing button or enter
 window.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    addTodo(e);
-    updateLS();
-
-    // Reset form
-    e.target.reset();
+    if (e.target.id === 'add-list-form') {
+        addTodoList();
+        updateLS();
+        e.target.reset();
+    } else {
+        addTodo(e);
+        updateLS();
+        e.target.reset();
+    }
 })
 
 // Get clicked elements for todo item updating

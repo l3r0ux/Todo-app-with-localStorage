@@ -7,8 +7,6 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
     if (!(init)) {
         // To add a new todo list
         todoListName = document.querySelector('#new-todo-list-input').value;
-        // Reset the todo list add input
-        document.querySelector('#new-todo-list-input').value = '';
 
         if (!(todoListName)) {
             return document.querySelector('#new-todo-list-input').focus();
