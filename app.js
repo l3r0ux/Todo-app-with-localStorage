@@ -1,13 +1,15 @@
 const addTodoForm = document.querySelector('#add-todo-list-form');
 const showAddTodoForm = document.querySelector('#show-add-todo-list-form');
 
-
 init();
 
 
 // To show new todo list form
 showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
+    setTimeout(() => {
+        document.getElementById('new-todo-list-input').focus();
+    }, 100)
 })
 
 // To add a todo list to page or todo item to a specific list by pressing button or enter
