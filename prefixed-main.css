@@ -638,6 +638,23 @@ body {
     #add-todo-list-form input {
         width: 80%;
     }
+    #add-list-form {
+        width: 100%;
+    }
+    #add-list-form input {
+        font-size: 1rem;
+        width: 60%;
+    }
+    #add-list-form button {
+        font-size: 1rem;
+        width: 30%;
+    }
+    .submit-due-date-update {
+        width: auto;
+    }
+    .clear-due-date {
+        width: auto;
+    }
 
     .todo-list {
         position: relative;
