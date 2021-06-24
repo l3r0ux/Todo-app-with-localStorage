@@ -667,5 +667,6 @@ body {
 
     .due-date-update-form {
         padding: 0.5rem;
+        width: 100%;
     }
 }
