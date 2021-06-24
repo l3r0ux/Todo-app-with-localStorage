@@ -43,15 +43,17 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
         </div>
 
         <div class="add-todo ${formExpanded ? 'form-expanded' : ''}">
-            <div class="todo-text">
-                <input class="input" type="text" placeholder="Enter your todo">
-            </div>
-            <div class="due-date">
-                <label class="due-label">Due(optional):</label>
-                <input class="date" type="date">
-                <input class="time" type="time">
-            </div>
-            <button class="submit" type="submit">Add</button>
+            <form class="add-todo-form">
+                <div class="todo-text">
+                    <input class="input" type="text" placeholder="Enter your todo">
+                </div>
+                <div class="due-date">
+                    <label class="due-label">Due(optional):</label>
+                    <input class="date" type="date">
+                    <input class="time" type="time">
+                </div>
+                <button class="submit" type="submit">Add</button>
+            </form>
         </div>
         
         <div class="expand-todo-items-control"><i class="fas fa-caret-down expand-todos ${todosExpanded ? 'todos-expanded' : ''}"></i></div>
@@ -105,7 +107,7 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
 // To add a todo item
 // let intervalId;
 function addTodo(e = null, listId = null, completed = null, text = null, dueDate = null, dueTime = null, init = false) {
-    let specificTodoList;
+    let specificTodoListForm;
     let todoItemText;
     let todoItemDueDate;
     let todoItemDueTime;
@@ -114,15 +116,15 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     // If true, assign the variables with the values from localStorage
     // If false, assign variables with values of inputs
     if (!(init)) {
-        // Gives the todo items of specific clicked todo list 
-        // let specificTodoList = document.getElementById(`${e.target.parentElement.parentElement.id}`);
-        specificTodoList = e.target.closest('section');
+        // Gives the todo items of specific submitted todo list 
+        specificTodoListForm = e.target;
         // Get specific todo lists' inputs
-        todoItemText = specificTodoList.children[1].children[0].children[0].value;
-        todoItemDueDate = specificTodoList.children[1].children[1].children[1].value;
-        todoItemDueTime = specificTodoList.children[1].children[1].children[2].value;
+        todoItemText = specificTodoListForm.children[0].children[0].value;
+        todoItemDueDate = specificTodoListForm.children[1].children[1].value;
+        todoItemDueTime = specificTodoListForm.children[1].children[2].value;
+        console.dir(specificTodoListForm.closest('section').children[3])
     } else {
-        specificTodoList = document.getElementById(listId);
+        specificTodoListForm = document.getElementById(listId);
         todoItemText = text;
         todoItemDueDate = dueDate;
         todoItemDueTime = dueTime;
@@ -133,7 +135,7 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         // If no date was added, give todo standard white transparent color
         // If date and time was added, compare that date and time to current, and assign background color accordingly
         if (!(todoItemText)) {
-            return specificTodoList.children[1].children[0].children[0].focus()
+            return specificTodoListForm.children[0].children[0].focus()
         }
     }
 
@@ -208,18 +210,12 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
     }
 
 
-    specificTodoList.children[3].append(todoItemContainer);
+    specificTodoListForm.closest('section').children[3].append(todoItemContainer);
 
     // wait until compute transitions
     requestAnimationFrame(() => {
         todoItemContainer.classList.remove('hidden');
     })
-
-    if (!(init)) {
-        specificTodoList.children[1].children[0].children[0].value = '';
-        specificTodoList.children[1].children[1].children[1].value = '';
-        specificTodoList.children[1].children[1].children[2].value = '';
-    }
 }
 
 // Function to calculate time left on load an set colors

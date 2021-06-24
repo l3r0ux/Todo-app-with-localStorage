@@ -1,6 +1,6 @@
 const addTodoForm = document.querySelector('#add-todo-list-form');
 const showAddTodoForm = document.querySelector('#show-add-todo-list-form');
-const addNewTodoList = document.querySelector('#add-new-todo-list');
+const addTodoListForm = document.getElementById('add-list-form');
 
 
 init();
@@ -11,18 +11,22 @@ showAddTodoForm.addEventListener('click', () => {
     addTodoForm.classList.remove('hidden')
 })
 
-// To add a new todo list by clicking button
-addNewTodoList.addEventListener('click', (e) => {
+// To add todo list on form submit
+addTodoListForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     addTodoList();
     updateLS();
 });
-// and by pressing enter
-window.addEventListener('keydown', (e) => {
-    // Check to see that enter was pressed and that the add todo form is on screen
-    if (e.key === 'Enter' && (!(addTodoForm.classList.contains('hidden')))) {
-        addTodoList();
-        updateLS();
-    }
+
+// To add a todo item to a specific list by pressing button or enter
+window.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    addTodo(e);
+    updateLS();
+
+    // Reset form
+    e.target.reset();
 })
 
 // Get clicked elements for todo item updating
@@ -109,8 +113,6 @@ window.addEventListener('click', (e) => {
         updateLS();
     }
 
-
-
     // To close "add todo list" window
     if (e.target.id === 'add-todo-list-form') {
         addTodoForm.classList.add('hidden');
@@ -138,13 +140,6 @@ window.addEventListener('click', (e) => {
     if (e.target.className.includes('expand-todos')) {
         e.target.closest('i').classList.toggle('todos-expanded');
         e.target.offsetParent.children[3].classList.toggle('todos-expanded');
-        updateLS();
-    }
-
-    // To add a todo item to a specific list by pressing button
-    if (e.target.className === 'submit') {
-        addTodo(e);
-        // hoverForDueDate();
         updateLS();
     }
 

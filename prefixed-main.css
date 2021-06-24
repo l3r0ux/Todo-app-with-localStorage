@@ -239,6 +239,12 @@ body {
 }
 
 /* Todo add form styling */
+.add-todo-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;    
+}
 .add-todo {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -285,7 +291,7 @@ body {
 .input {
     font-size: 1rem;
     padding-left: 0.8rem;
-    width: 90%;
+    width: 93%;
     height: 2rem;
     border: none;
     border-radius: 1rem;
