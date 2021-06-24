@@ -94,9 +94,8 @@ function addTodoList(id = null, zIndex = null, name = null, top = null, left = n
         // Timeout so that function draggable uses the final coordinates after animation
         setTimeout(() => {
             // Make specific todo draggable
-
             draggable(todoListContainer);
-
+            (!(init)) ? todoListContainer.children[1].children[0].children[0].children[0].focus() : '';
         }, 800)
     }
 }
