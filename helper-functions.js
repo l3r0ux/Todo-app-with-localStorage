@@ -119,7 +119,6 @@ function addTodo(e = null, listId = null, completed = null, text = null, dueDate
         todoItemText = specificTodoListForm.children[0].children[0].value;
         todoItemDueDate = specificTodoListForm.children[1].children[1].value;
         todoItemDueTime = specificTodoListForm.children[1].children[2].value;
-        console.dir(specificTodoListForm.closest('section').children[3])
     } else {
         specificTodoListForm = document.getElementById(listId);
         todoItemText = text;
@@ -238,19 +237,20 @@ function setTimeLeftAndColor(todoItemContainer, todoItemDueDate, todoItemDueTime
         // Get entered date in same format
         let dueDate = new Date(todoItemDueDate);
         // if time input was present, use that: otherwise use the default of 8am
-        if (dueHours && dueMinutes) {
+        if (dueHours >= 0 && dueMinutes >= 0) {
             dueDate.setHours(dueHours);
             dueDate.setMinutes(dueMinutes);
         } else {
             dueDate.setHours(8);
             dueDate.setMinutes(0);
+            // console.log(dueDate);
         }
         // Do time comparison and assign background colors if a date was specified
         // Get current date
         let currentDate = new Date();
 
         // difference between due date and current date in seconds
-        let difference = ((dueDate - currentDate) / 1000).toFixed(2);
+        let difference = ((dueDate - currentDate) / 1000);
 
         // If 5 days or more left
         if (difference >= 432000) {
